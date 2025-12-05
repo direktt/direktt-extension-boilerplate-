@@ -21,7 +21,7 @@ add_action('plugins_loaded', 'direktt_extension_boilerplate_activation_check', -
 // Plugin into Direktt Settings in wp-admin
 add_action('direktt_setup_settings_pages', 'direktt_extension_boilerplate_setup_settings_pages');
 
-// Plugin into User Profile in direktt mobile app
+// Plugin into User Profile in Direktt mobile app
 add_action('direktt_setup_profile_tools', 'direktt_extension_boilerplate_setup_profile_tool');
 
 function direktt_extension_boilerplate_init()
@@ -117,10 +117,8 @@ function direktt_extension_boilerplate_setup_settings_pages()
 
 function direktt_extension_boilerplate_render_settings()
 {
-    echo( esc_html__('<h3 class="direktt-extension-boilerplate">Direktt Extension Boilerplate Settings Go Here.', 'direktt-extension-boilerplate</h3>') );
+    echo( __('<h3 class="direktt-extension-boilerplate">Direktt Extension Boilerplate Settings Go Here.</h3>', 'direktt-extension-boilerplate') );
 }
-
-//// Send Message Profle plugin
 
 function direktt_extension_boilerplate_setup_profile_tool()
 {
@@ -151,5 +149,5 @@ function direktt_extension_boilerplate_setup_profile_tool()
 
 function direktt_extension_boilerplate_render_profile_tool()
 {
-    echo( esc_html__('<h3 class="direktt-extension-boilerplate">Direktt Extension Boilerplate Profile Interface Goes Here.</h3>', 'direktt-extension-boilerplate') );
+    echo( __('<h3 class="direktt-extension-boilerplate">Direktt Extension Boilerplate Profile Interface Goes Here.</h3>', 'direktt-extension-boilerplate') );
 }
