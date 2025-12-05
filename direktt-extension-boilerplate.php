@@ -19,7 +19,10 @@ add_action('init', 'direktt_extension_boilerplate_init');
 add_action('plugins_loaded', 'direktt_extension_boilerplate_activation_check', -20);
 
 // Plugin into Direktt Settings in wp-admin
-add_action('direktt_setup_settings_pages', 'setup_settings_pages');
+add_action('direktt_setup_settings_pages', 'direktt_extension_boilerplate_setup_settings_pages');
+
+// Plugin into User Profile in direktt mobile app
+add_action('direktt_setup_profile_tools', 'direktt_extension_boilerplate_setup_profile_tool');
 
 function direktt_extension_boilerplate_init()
 {
@@ -75,7 +78,7 @@ function direktt_extension_boilerplate_enqueue_public_assets()
 
     if ($direktt_user) {
         wp_enqueue_script(
-            'direktt_extension_boilerplate',
+            'direktt-extension-boilerplate-public',
             plugin_dir_url(__FILE__) . 'js/direktt-extension-boilerplate-public.js',
             array('jquery', 'direktt_public'),
             '',
@@ -87,54 +90,66 @@ function direktt_extension_boilerplate_enqueue_public_assets()
 
 }
 
-function setup_settings_pages()
+function direktt_extension_boilerplate_setup_settings_pages()
 {
     Direktt::add_settings_page(
         array(
-            "id" => "welcome-message",
-            "label" => __('Welcome Message Settings', 'direktt-extension-boilerplate'),
-            "callback" => 'render_welcome_settings',
-            "priority" => 1
-        )
-    );
-}
-
-function render_welcome_settings()
-{
-    echo( esc_html__('Direktt Extenstion Boilerplate settings go here.', 'direktt-extension-boilerplate') );
-}
-
-//// Send Message Profle plugin
-
-add_action('direktt_setup_profile_tools', 'setup_profile_tools');
-
-function setup_profile_tools()
-{
-    Direktt_Profile::add_profile_tool(
-        array(
-            "id" => "sample-profile-tool",
-            "label" => __('Sample Profile Tool', 'direktt_boilerplate'),
-            "callback" => 'render_sample_profile_tool',
-            "categories" => ['basic-direktt-users'],
-            "tags" => ['direktttag1'],
+            "id" => "extension-boilerplate",
+            "label" => __('Extension Boilerplate Settings', 'direktt-extension-boilerplate'),
+            "callback" => 'direktt_extension_boilerplate_render_settings',
             "priority" => 1,
             "cssEnqueueArray" => [
                 array(
-                    "handle" => "my-css",
-                    "src" => plugin_dir_url(__FILE__) . 'css/mycss.css'
+                    "handle" => "direktt-extension-boilerplate",
+                    "src" => plugin_dir_url(__FILE__) . 'css/direktt-extension-boilerplate.css'
                 ),
             ],
             "jsEnqueueArray" => [
                 array(
-                    "handle" => "my-js",
-                    "src" => plugin_dir_url(__FILE__) . 'js/myjs.js'
+                    "handle" => "direktt-extension-boilerplate-settings",
+                    "src" => plugin_dir_url(__FILE__) . 'js/direktt-extension-boilerplate-settings.js',
+                    "deps" => array('jquery'),
                 )
             ]
         )
     );
 }
 
-function render_sample_profile_tool()
+function direktt_extension_boilerplate_render_settings()
 {
-    echo 'Sample profile tool';
+    echo( esc_html__('<h3 class="direktt-extension-boilerplate">Direktt Extension Boilerplate Settings Go Here.', 'direktt-extension-boilerplate</h3>') );
+}
+
+//// Send Message Profle plugin
+
+function direktt_extension_boilerplate_setup_profile_tool()
+{
+    Direktt_Profile::add_profile_tool(
+        array(
+            "id" => "direktt-boilerplate-profile-tool",
+            "label" => __('Direktt Extension Tool', 'direktt-extension-boilerplate'),
+            "callback" => 'direktt_extension_boilerplate_render_profile_tool',
+            "categories" => [],
+            "tags" => [],
+            "priority" => 1,
+            "cssEnqueueArray" => [
+                array(
+                    "handle" => "direktt-extension-boilerplate",
+                    "src" => plugin_dir_url(__FILE__) . 'css/direktt-extension-boilerplate.css'
+                ),
+            ],
+            "jsEnqueueArray" => [
+                array(
+                    "handle" => "direktt-extension-boilerplate-profile",
+                    "src" => plugin_dir_url(__FILE__) . 'js/direktt-extension-boilerplate-profile.js',
+                    "deps" => array('jquery', 'direktt-extension-boilerplate-public'),
+                )
+            ]
+        )
+    );
+}
+
+function direktt_extension_boilerplate_render_profile_tool()
+{
+    echo( esc_html__('<h3 class="direktt-extension-boilerplate">Direktt Extension Boilerplate Profile Interface Goes Here.</h3>', 'direktt-extension-boilerplate') );
 }
